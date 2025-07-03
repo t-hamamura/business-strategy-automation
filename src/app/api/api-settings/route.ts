@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabase, getCurrentUser } from '@/lib/supabase'
+import { createServerSupabase, getCurrentUser } from '@/lib/supabase-server'
 import { z } from 'zod'
 
 // API設定作成・更新用のスキーマ

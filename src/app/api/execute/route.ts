@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabase, getCurrentUser } from '@/lib/supabase'
+import { createServerSupabase, getCurrentUser } from '@/lib/supabase-server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
 interface ExecuteRequest {
@@ -32,7 +32,7 @@ async function executeWithGemini(prompt: string, apiKey: string): Promise<string
     return response.text()
   } catch (error) {
     console.error('Gemini API error:', error)
-    throw new Error(`Gemini API実行エラー: ${error.message}`)
+    throw new Error(`Gemini API実行エラー: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
@@ -181,7 +181,7 @@ export async function POST(request: NextRequest) {
 
       // フェーズ2以降の場合、前の出力を含める
       if (phase > 1 && previousOutput) {
-        const contextSection = prompt.match(/### ▼▼▼.*?### ▲▲▲/s)
+        const contextSection = prompt.match(/### ▼▼▼[\s\S]*?### ▲▲▲/)
         if (contextSection) {
           prompt = prompt.replace(contextSection[0], 
             `### ▼▼▼ 以下に、フェーズ${phase-1}で生成されたレポートをそのまま貼り付けてください ▼▼▼\n\n${previousOutput}\n\n### ▲▲▲ 貼り付けはここまで ▲▲▲`)
@@ -226,7 +226,7 @@ export async function POST(request: NextRequest) {
         .from('execution_logs')
         .update({
           status: 'failed',
-          error_message: error.message,
+          error_message: error instanceof Error ? error.message : 'Unknown error',
           completed_at: new Date().toISOString()
         })
         .eq('id', executionLog.id)
@@ -237,7 +237,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Execute API error:', error)
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }
     )
   }

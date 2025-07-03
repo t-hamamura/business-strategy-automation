@@ -1,13 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
+  output: 'standalone',
   images: {
     domains: ['localhost'],
   },
   env: {
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'none' },
+        ],
+      },
+    ]
+  },
+  experimental: {
+    serverComponentsExternalPackages: ['@supabase/supabase-js'],
   },
 }
 

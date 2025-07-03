@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getCurrentUser, createServerSupabase } from '@/lib/supabase'
+import { getCurrentUser, createServerSupabase } from '@/lib/supabase-server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -18,6 +18,7 @@ import {
   ExternalLink
 } from 'lucide-react'
 import { formatDate, getStatusColor, getStatusLabel } from '@/lib/utils'
+import ProjectActions from '@/components/project-actions'
 
 interface ProjectPageProps {
   params: {
@@ -90,10 +91,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <Badge className={getStatusColor(project.status)}>
             {getStatusLabel(project.status)}
           </Badge>
-          <Button>
-            <PlayCircle className="mr-2 h-4 w-4" />
-            実行開始
-          </Button>
+          <ProjectActions project={project} />
         </div>
       </div>
 
@@ -201,7 +199,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   <div>
                     <h4 className="text-sm font-medium mb-2">競合企業</h4>
                     <div className="flex flex-wrap gap-2">
-                      {project.competitors.map((competitor, index) => (
+                      {project.competitors.map((competitor: string, index: number) => (
                         <Badge key={index} variant="outline">
                           {competitor}
                         </Badge>

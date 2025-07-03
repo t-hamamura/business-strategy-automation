@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabase, getCurrentUser } from '@/lib/supabase'
+import { createServerSupabase, getCurrentUser } from '@/lib/supabase-server'
 
 interface BatchExecuteRequest {
   projectId: string
@@ -61,7 +61,7 @@ async function executeSinglePrompt(
       templateId,
       phase,
       success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error'
     }
   }
 }
@@ -157,14 +157,14 @@ export async function POST(request: NextRequest) {
             templateId: template.id,
             phase,
             success: false,
-            error: error.message
+            error: error instanceof Error ? error.message : 'Unknown error'
           }
           results.push(errorResult)
 
           if (!executionSettings.skipOnError) {
             return NextResponse.json({
               success: false,
-              error: `Execution failed at ${template.title} - Phase ${phase}: ${error.message}`,
+              error: `Execution failed at ${template.title} - Phase ${phase}: ${error instanceof Error ? error.message : 'Unknown error'}`,
               results
             }, { status: 500 })
           }
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Batch execute API error:', error)
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }
     )
   }

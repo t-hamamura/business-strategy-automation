@@ -13,6 +13,7 @@ import { CreateProjectDialog } from '@/components/create-project-dialog'
 import { ProjectCard } from '@/components/project-card'
 import { ExecutionDashboard } from '@/components/execution-dashboard'
 import { PromptTemplateList } from '@/components/prompt-template-list'
+import { ApiUsageDashboard } from '@/components/api-usage-dashboard'
 
 interface DashboardClientProps {
   user: User
@@ -128,6 +129,7 @@ export function DashboardClient({
           <TabsTrigger value="projects">プロジェクト</TabsTrigger>
           <TabsTrigger value="execution">実行管理</TabsTrigger>
           <TabsTrigger value="templates">調査項目</TabsTrigger>
+          <TabsTrigger value="api-usage">API使用量</TabsTrigger>
           <TabsTrigger value="settings">設定</TabsTrigger>
         </TabsList>
 
@@ -137,7 +139,6 @@ export function DashboardClient({
               <ProjectCard 
                 key={project.id} 
                 project={project}
-                onSelect={setSelectedProject}
               />
             ))}
             {projects.length === 0 && (
@@ -162,14 +163,18 @@ export function DashboardClient({
         <TabsContent value="execution" className="space-y-4">
           <ExecutionDashboard 
             projects={projects}
-            selectedProject={selectedProject}
-            onSelectProject={setSelectedProject}
           />
         </TabsContent>
 
         <TabsContent value="templates" className="space-y-4">
           <PromptTemplateList 
             templates={promptTemplates}
+            workspaceId={workspace.workspace_id}
+          />
+        </TabsContent>
+
+        <TabsContent value="api-usage" className="space-y-4">
+          <ApiUsageDashboard 
             workspaceId={workspace.workspace_id}
           />
         </TabsContent>

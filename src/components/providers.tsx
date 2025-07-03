@@ -1,6 +1,6 @@
 'use client'
 
-import { createClientSupabase } from '@/lib/supabase'
+import { createClientSupabase } from '@/lib/supabase-client'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 import { Toaster } from '@/components/ui/toaster'
