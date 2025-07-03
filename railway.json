@@ -6,8 +6,10 @@
   },
   "deploy": {
     "startCommand": "npm start",
-    "healthcheckPath": "api/health",
+-   "healthcheckPath": "api/health",
++   "healthcheckPath": "/api/health",
++   "healthcheckMethod": "GET",
     "healthcheckTimeout": 60,
     "restartPolicyType": "ON_FAILURE"
   }
-} 
+}
