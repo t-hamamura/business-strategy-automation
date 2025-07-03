@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/index'
-import { Badge } from '@/components/ui/index'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { ArrowRight, BarChart3, Bot, FileText, Zap, Users, CheckCircle } from 'lucide-react'
 
 export default function HomePage() {
