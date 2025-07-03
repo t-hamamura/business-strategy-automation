@@ -1,0 +1,15 @@
+[phases.setup]
+nixPkgs = ["nodejs-18_x", "npm-9_x"]
+
+[phases.install]
+cmds = [
+    "npm cache clean --force",
+    "rm -rf node_modules package-lock.json",
+    "npm install --legacy-peer-deps"
+]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm start"
