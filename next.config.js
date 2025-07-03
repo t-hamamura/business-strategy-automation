@@ -20,6 +20,10 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['@supabase/supabase-js'],
   },
+  // Railwayでの動作を改善するための設定
+  poweredByHeader: false,
+  compress: true,
+  generateEtags: false,
 }
 
 module.exports = nextConfig
